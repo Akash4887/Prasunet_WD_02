@@ -178,8 +178,6 @@ With these steps, you have a functional and interactive stopwatch web applicatio
 
 To build a tic-tac-toe web application, you can use HTML, CSS, and JavaScript. By implementing functions to handle user clicks, track game state, and check for winning conditions, you can create an interactive and engaging tic-tac-toe game. With these technologies and functionalities, users can play against each other or against an AI opponent, aiming to get three markers in a row to win the game.
 
-GPT-4o
-Absolutely! Let's walk through the process of building a simple tic-tac-toe web application using HTML, CSS, and JavaScript. We'll focus on a two-player game where users can play against each other.
 
 Step 1: HTML Structure
 First, let's create the basic structure of our tic-tac-toe game using HTML.
