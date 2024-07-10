@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="stopwatch">
+        <div id="display">00:00:00.00</div>
+        <div class="controls">
+            <button id="startStopBtn">Start</button>
+            <button id="resetBtn">Reset</button>
+            <button id="lapBtn">Lap</button>
+        </div>
+        <ul id="laps"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
+css
+/* styles.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+}
+
+.stopwatch {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#display {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.controls button {
+    margin: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#laps {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#laps li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+javascript 
+// script.js
+let startTime;
+let updatedTime;
+let difference;
+let tInterval;
+let running = false;
+let lapCounter = 0;
+
+const display = document.getElementById('display');
+const startStopBtn = document.getElementById('startStopBtn');
+const resetBtn = document.getElementById('resetBtn');
+const lapBtn = document.getElementById('lapBtn');
+const laps = document.getElementById('laps');
+
+function startStop() {
+    if (!running) {
+        startTime = new Date().getTime() - (difference || 0);
+        tInterval = setInterval(updateTime, 10);
+        startStopBtn.textContent = 'Pause';
+        running = true;
+    } else {
+        clearInterval(tInterval);
+        startStopBtn.textContent = 'Start';
+        running = false;
+    }
+}
+
+function reset() {
+    clearInterval(tInterval);
+    difference = 0;
+    running = false;
+    startStopBtn.textContent = 'Start';
+    display.textContent = '00:00:00.00';
+    laps.innerHTML = '';
+    lapCounter = 0;
+}
+
+function lap() {
+    if (running) {
+        lapCounter++;
+        const lapTime = document.createElement('li');
+        lapTime.textContent = `Lap ${lapCounter}: ${display.textContent}`;
+        laps.appendChild(lapTime);
+    }
+}
+
+function updateTime() {
+    updatedTime = new Date().getTime();
+    difference = updatedTime - startTime;
+    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+    const milliseconds = Math.floor((difference % 1000) / 10);
+    display.textContent = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}.${pad(milliseconds, 2)}`;
+}
+
+function pad(number, digits = 2) {
+    return number.toString().padStart(digits, '0');
+}
+
+startStopBtn.addEventListener('click', startStop);
+resetBtn.addEventListener('click', reset);
+lapBtn.addEventListener('click', lap);
+
+
